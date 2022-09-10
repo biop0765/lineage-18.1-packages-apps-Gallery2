@@ -214,22 +214,35 @@ public class GestureControllerOverlay extends FrameLayout implements
             adjustPercent = 1.0f;
         }
 
-        WindowManager.LayoutParams lp = ((MovieActivity) getContext()).getWindow().getAttributes();
-        if (mStartBrightness < 0) {
-            mStartBrightness = lp.screenBrightness;
+        AudioManager audioManager = (AudioManager) getContext()
+                .getSystemService(Context.AUDIO_SERVICE);
+        final int STREAM = AudioManager.STREAM_MUSIC;
+        int maxVolume = audioManager.getStreamMaxVolume(STREAM);
+
+        if (maxVolume == 0) return;
+
+        if (mStartVolumePercent < 0) {
+            int curVolume = audioManager.getStreamVolume(STREAM);
+            mStartVolumePercent = curVolume * 1.0f / maxVolume;
         }
-        float targetBrightness = (float) (mStartBrightness + adjustPercent * 1.0f);
-        if (targetBrightness <= 0.0f) {
-            targetBrightness = 0.004f;
-        } else if (targetBrightness >= 1.0f) {
-            targetBrightness = 1.0f;
+        double targetPercent = mStartVolumePercent + adjustPercent;
+        if (targetPercent > 1.0f) {
+            targetPercent = 1.0f;
+        } else if (targetPercent < 0) {
+            targetPercent = 0;
         }
-        lp.screenBrightness = targetBrightness;
-        ((MovieActivity) getContext()).getWindow().setAttributes(lp);
+
+        int index = (int) (maxVolume * targetPercent);
+        if (index > maxVolume) {
+            index = maxVolume;
+        } else if (index < 0) {
+            index = 0;
+        }
+        audioManager.setStreamVolume(STREAM, index, 0);
 
         if (mCurrentIndicator != null) {
-            mCurrentIndicator.setCompoundDrawables(null, mBrightnessDrawable, null, null);
-            mCurrentIndicator.setText((int) (targetBrightness * MAX_BRIGHTNESS) + "%");
+            mCurrentIndicator.setCompoundDrawables(null, mVolumeDrawable, null, null);
+            mCurrentIndicator.setText(index * 100 / maxVolume + "%");
         }
         showIndicator();
     }

@@ -53,7 +53,8 @@ public abstract class LocalMediaItem extends MediaItem {
 
     @Override
     public long getDateInMs() {
-        return dateTakenInMs;
+        long dateAdded = dateAddedInSec * 1000;
+        return dateAdded;
     }
 
     @Override
@@ -110,6 +111,7 @@ public abstract class LocalMediaItem extends MediaItem {
         if (GalleryUtils.isValidLocation(latitude, longitude)) {
             details.addDetail(MediaDetails.INDEX_LOCATION, new double[] {latitude, longitude});
         }
+        //Log.d(TAG, "File: " + filePath + "dateModifiedInSec: " + dateModifiedInSec );
         if (fileSize > 0) details.addDetail(MediaDetails.INDEX_SIZE, fileSize);
         return details;
     }

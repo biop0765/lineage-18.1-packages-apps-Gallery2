@@ -104,7 +104,7 @@ public class LocalVideo extends LocalMediaItem {
         mimeType = cursor.getString(INDEX_MIME_TYPE);
         latitude = cursor.getDouble(INDEX_LATITUDE);
         longitude = cursor.getDouble(INDEX_LONGITUDE);
-        dateTakenInMs = cursor.getLong(INDEX_DATE_TAKEN);
+        dateTakenInMs = 1000 * cursor.getLong(INDEX_DATE_ADDED);
         dateAddedInSec = cursor.getLong(INDEX_DATE_ADDED);
         dateModifiedInSec = cursor.getLong(INDEX_DATE_MODIFIED);
         filePath = cursor.getString(INDEX_DATA);
@@ -137,7 +137,7 @@ public class LocalVideo extends LocalMediaItem {
         latitude = uh.update(latitude, cursor.getDouble(INDEX_LATITUDE));
         longitude = uh.update(longitude, cursor.getDouble(INDEX_LONGITUDE));
         dateTakenInMs = uh.update(
-                dateTakenInMs, cursor.getLong(INDEX_DATE_TAKEN));
+                dateTakenInMs, 1000 * cursor.getLong(INDEX_DATE_ADDED));
         dateAddedInSec = uh.update(
                 dateAddedInSec, cursor.getLong(INDEX_DATE_ADDED));
         dateModifiedInSec = uh.update(

@@ -136,7 +136,7 @@ public class LocalImage extends LocalMediaItem {
         mimeType = cursor.getString(INDEX_MIME_TYPE);
         latitude = cursor.getDouble(INDEX_LATITUDE);
         longitude = cursor.getDouble(INDEX_LONGITUDE);
-        dateTakenInMs = cursor.getLong(INDEX_DATE_TAKEN);
+        dateTakenInMs = 1000 * cursor.getLong(INDEX_DATE_ADDED);
         dateAddedInSec = cursor.getLong(INDEX_DATE_ADDED);
         dateModifiedInSec = cursor.getLong(INDEX_DATE_MODIFIED);
         filePath = cursor.getString(INDEX_DATA);
@@ -146,6 +146,7 @@ public class LocalImage extends LocalMediaItem {
         fileSize = cursor.getLong(INDEX_SIZE);
         width = cursor.getInt(INDEX_WIDTH);
         height = cursor.getInt(INDEX_HEIGHT);
+        //Log.d(TAG, "File: " + filePath + "  dateTakenInMs: " + dateTakenInMs );
     }
 
     @Override
@@ -156,7 +157,7 @@ public class LocalImage extends LocalMediaItem {
         latitude = uh.update(latitude, cursor.getDouble(INDEX_LATITUDE));
         longitude = uh.update(longitude, cursor.getDouble(INDEX_LONGITUDE));
         dateTakenInMs = uh.update(
-                dateTakenInMs, cursor.getLong(INDEX_DATE_TAKEN));
+                dateTakenInMs, 1000 * cursor.getLong(INDEX_DATE_ADDED));
         dateAddedInSec = uh.update(
                 dateAddedInSec, cursor.getLong(INDEX_DATE_ADDED));
         dateModifiedInSec = uh.update(
@@ -168,6 +169,7 @@ public class LocalImage extends LocalMediaItem {
         fileSize = uh.update(fileSize, cursor.getLong(INDEX_SIZE));
         width = uh.update(width, cursor.getInt(INDEX_WIDTH));
         height = uh.update(height, cursor.getInt(INDEX_HEIGHT));
+        //Log.d(TAG, "File: " + filePath + "  dateTakenInMs: " + dateTakenInMs );
         return uh.isUpdated();
     }
 
